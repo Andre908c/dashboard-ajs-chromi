@@ -59,7 +59,3 @@ localStorage.setItem("myLinks", 'PEGA_AQUI_TUS_LINKS_JSON');
 location.reload();
 
 ```
-
-```
-
-```
