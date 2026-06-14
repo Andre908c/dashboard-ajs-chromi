@@ -1,28 +1,55 @@
-# Dashboard AJS
+🚀 Dashboard AJS
+Dashboard AJS es una página de inicio personalizada (Custom Start Page) diseñada para centralizar accesos, tareas y el clima en una interfaz moderna con estilo Glassmorphism.
 
-Dashboard AJS es una página de inicio personalizada (Custom Start Page) diseñada para centralizar accesos, tareas y el clima en una interfaz moderna y minimalista.
+🛠 Instalación y Configuración
+Sigue estos pasos para tener tu Dashboard funcionando en tu computadora:
 
-## ✨ Características
-- **Quick Links:** Gestión de accesos rápidos con detección automática de iconos.
-- **Task Tracker:** Sistema de tareas persistentes (no se borran al cerrar el navegador).
-- **Live Weather:** Integración en tiempo real con OpenWeatherMap para obtener el clima actual.
-- **Glassmorphism Design:** Diseño estético con efectos de desenfoque y transparencia.
-- **Persistencia:** Todos tus datos se guardan de forma local en tu navegador usando la API de LocalStorage.
+1. Descarga y Preparación
+Descarga este repositorio como un archivo .zip y descomprímelo en una carpeta de tu preferencia.
 
-## 🛠 Tecnologías Utilizadas
-- **HTML5:** Estructura web.
-- **CSS3:** Diseño y efectos visuales.
-- **JavaScript:** Lógica funcional y consumo de APIs.
+Coloca tu imagen de fondo favorita en la misma carpeta y asegúrate de que se llame FONDO.jpg (o ajusta el nombre en el archivo CSS).
 
-## 🚀 Cómo usarlo
-1. Descarga el repositorio o clona el proyecto.
-2. Abre el archivo `index.html` en cualquier navegador moderno.
-3. ¡Personaliza tus accesos y comienza a organizar tu día!
+2. Configuración Personalizada
+Abre el archivo index.html con un editor de texto (como el Bloc de notas o VS Code) y busca la sección de configuración al principio del script:
 
-## ⚙️ Instalación (Para transferir a otro dispositivo)
-Si deseas mover tu Dashboard a otro equipo, puedes transferir los datos siguiendo estos comandos en la consola (F12 > Console) de tu navegador:
+JavaScript
+const CONFIG = {
+    apiKey: 'TU_API_KEY_AQUI', // Obtén tu clave en https://openweathermap.org/api
+    city: 'Cuidad_de_Prefencia'       // Puedes cambiarla por tu ciudad
+};
+API Key: Crea una cuenta gratuita en OpenWeatherMap, genera tu API Key y pégala donde dice 'TU_API_KEY_AQUI'.
 
-**Para exportar tus datos:**
-```javascript
+Ciudad: Cambia 'Manizales,CO' si deseas ver el clima de otro lugar.
+
+3. Configurar en el Navegador (Google Chrome)
+Para que esta página sea tu página de inicio cada vez que abras el navegador:
+
+Obtener la ruta: Abre el archivo index.html en tu navegador. Copia la dirección completa que aparece en la barra superior (ejemplo: C:\Users\Nombre\Desktop\Dashboard-AJS\index.html).
+
+Configuración de Chrome:
+
+Ve a los tres puntos (⋮) en la esquina superior derecha > Configuración.
+
+En el menú izquierdo, haz clic en "Al iniciar".
+
+Selecciona la opción "Abrir una página específica o un conjunto de páginas".
+
+Haz clic en "Añadir una nueva página" y pega la ruta que copiaste.
+
+⚙️ Tecnologías y Herramientas
+APIs: OpenWeatherMap API para el reporte meteorológico.
+
+Almacenamiento: LocalStorage API para guardar tus tareas y links directamente en tu navegador.
+
+Diseño: CSS Glassmorphism.
+
+Debug/Test: Google Chrome DevTools (para realizar inspecciones y pruebas de código).
+
+💡 ¿Cómo transferir mis datos a otro equipo?
+Si cambias de computadora y quieres llevarte tus tareas y links, puedes extraer tus datos desde la consola (F12 > Console) usando:
+
+JavaScript
+// Para exportar:
 console.log("Tareas:", localStorage.getItem("tasks"));
 console.log("Links:", localStorage.getItem("myLinks"));
+Proyecto diseñado para mejorar la productividad y estética del entorno de navegación
