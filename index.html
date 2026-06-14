@@ -6,7 +6,7 @@
     <style>
         :root { --accent: #3b82f6; --bg-glass: rgba(255, 255, 255, 0.08); }
         body { margin: 0; height: 100vh; font-family: system-ui, sans-serif; 
-               background: url('casa-en-el-campo-anime_8192x4560_xtrafondos.com.jpg') no-repeat center center fixed; 
+               background: url('Imagen_de_preferencia_del_fondo.jpg') no-repeat center center fixed; 
                background-size: cover; color: white; display: grid; 
                grid-template-rows: auto 1fr; padding: 20px; box-sizing: border-box; }
         
@@ -48,7 +48,7 @@
                     <i class="fas fa-cloud" style="font-size: 3rem; color: #a1c4fd;"></i>
                     <div>
                         <div style="font-size: 1.8rem; font-weight:bold;" id="tempDisplay">--°C</div>
-                        <div style="font-size: 0.9rem; opacity: 0.8;">Manizales, Colombia</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Cuidad de Preferencia</div>
                     </div>
                 </div>
             </div>
@@ -149,8 +149,8 @@
 
         // CLIMA
        async function updateWeather() {
-            const apiKey = '9d9ad320eca029c62c4890cfeaf5e0c4';
-            const city = 'Manizales,CO';
+            const apiKey = 'TU_API_KEY_AQUI';
+            const city = '---------';
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
 
             try {
