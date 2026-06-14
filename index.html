@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --accent: #3b82f6; --bg-glass: rgba(255, 255, 255, 0.08); }
+        body { margin: 0; height: 100vh; font-family: system-ui, sans-serif; 
+               background: url('casa-en-el-campo-anime_8192x4560_xtrafondos.com.jpg') no-repeat center center fixed; 
+               background-size: cover; color: white; display: grid; 
+               grid-template-rows: auto 1fr; padding: 20px; box-sizing: border-box; }
+        
+        .navbar { background: var(--bg-glass); backdrop-filter: blur(20px); padding: 15px 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 2; }
+        .search-bar { background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; padding: 8px 15px; border-radius: 20px; width: 300px; }
+        
+        .main-grid { display: grid; grid-template-columns: 350px 1fr 350px; gap: 20px; padding-top: 20px; }
+        .side { display: flex; flex-direction: column; gap: 20px; }
+        .card { background: var(--bg-glass); backdrop-filter: blur(15px); padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .task-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; box-sizing: border-box; margin-bottom: 15px; }
+        .task-list { list-style: none; padding: 0; margin: 0; }
+        .task-list li { padding: 5px 0; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .task-list li:hover { color: var(--accent); }
+        
+        .btn-add { background: var(--bg-glass); border: 1px dashed rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 12px; cursor: pointer; }
+        .icon-box { background: var(--bg-glass); padding: 10px; border-radius: 10px; color: white; text-decoration: none; text-align: center; display: inline-block; }
+        
+        #reloj { font-size: 3rem; margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div style="font-weight:bold; font-size: 1.2rem;">Dashboard AJS</div>
+        <form action="https://www.google.com/search" method="GET" target="_blank">
+            <input type="text" name="q" class="search-bar" placeholder="Buscar en Google...">
+        </form>
+    </nav>
+
+    <div class="main-grid">
+        <div class="side">
+            <div class="card">
+                <div id="fecha">--/--/----</div>
+                <h1 id="reloj">00:00:00</h1>
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0;">Clima</h3>
+                <div style="display:flex; align-items:center; gap:15px;">
+                    <i class="fas fa-cloud" style="font-size: 3rem; color: #a1c4fd;"></i>
+                    <div>
+                        <div style="font-size: 1.8rem; font-weight:bold;" id="tempDisplay">--°C</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Manizales, Colombia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div></div>
+
+        <div class="side">
+            <div class="card">
+                <h3 style="margin-top:0;">Tareas</h3>
+                <input type="text" class="task-input" id="taskInput" placeholder="Nueva tarea (Enter)...">
+                <ul class="task-list" id="taskList"></ul>
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0;">Accesos</h3>
+                <div id="linkContainer" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
+                    <button class="btn-add" onclick="addNewLink()">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => { 
+            updateUI(); 
+            setInterval(updateUI, 1000); 
+            loadTasks(); 
+            loadLinks(); 
+            updateWeather(); 
+            setInterval(updateWeather, 600000); // 10 minutos
+        };
+
+        function updateUI() {
+            const now = new Date();
+            document.getElementById('fecha').textContent = now.toLocaleDateString('es-CO');
+            document.getElementById('reloj').textContent = now.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true});
+        }
+
+        // TAREAS
+        document.getElementById('taskInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && this.value.trim() !== "") {
+                const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+                tasks.push(this.value);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                this.value = '';
+                loadTasks();
+            }
+        });
+
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            document.getElementById('taskList').innerHTML = tasks.map((t, i) => `<li onclick="delTask(${i})">• ${t}</li>`).join('');
+        }
+
+        function delTask(i) {
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
+            tasks.splice(i, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        // ACCESOS
+        function addNewLink() {
+            const url = prompt("Pega la URL completa (ej: https://kick.com):");
+            const name = prompt("Nombre del acceso:");
+            if (url && name) {
+                const links = JSON.parse(localStorage.getItem('myLinks') || '[]');
+                links.push({name, url});
+                localStorage.setItem('myLinks', JSON.stringify(links));
+                loadLinks();
+            }
+        }
+
+        function loadLinks() {
+            const links = JSON.parse(localStorage.getItem('myLinks') || '[]');
+            const container = document.getElementById('linkContainer');
+            
+            container.innerHTML = links.map((l, i) => {
+                let domain = "";
+                try { domain = new URL(l.url).hostname; } catch(e) { domain = "google.com"; }
+                const iconUrl = `https://favicons.githubusercontent.com/${domain}`;
+                
+                return `<a href="${l.url}" target="_blank" class="icon-box" title="${l.name}" oncontextmenu="event.preventDefault(); delLink(${i})">
+                            <img src="${iconUrl}" style="width:24px; height:24px; border-radius:4px;" 
+                            onerror="this.src='https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${l.url}&size=64';">
+                        </a>`;
+            }).join('') + `<button class="btn-add" onclick="addNewLink()">+</button>`;
+        }
+
+        function delLink(i) {
+            if (confirm("¿Quieres eliminar este acceso?")) {
+                let links = JSON.parse(localStorage.getItem('myLinks'));
+                links.splice(i, 1);
+                localStorage.setItem('myLinks', JSON.stringify(links));
+                loadLinks();
+            }
+        }
+
+        // CLIMA
+       async function updateWeather() {
+            const apiKey = '9d9ad320eca029c62c4890cfeaf5e0c4';
+            const city = 'Manizales,CO';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Error en API');
+                const data = await response.json();
+                document.getElementById('tempDisplay').textContent = `${Math.round(data.main.temp)}°C`;
+            } catch (error) {
+                console.error("Clima fallido, usando valor de respaldo:", error);
+                // Si falla la API, mostramos un valor aproximado para que no se quede en --
+                document.getElementById('tempDisplay').textContent = "18°C"; 
+            }
+        }
+    </script>
+</body>
+</html>
